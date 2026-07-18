@@ -1,6 +1,5 @@
 const Employee = require('../models/Employee');
 
-// Helper function to build organization tree
 const buildTree = async (managerId = null) => {
   const employees = await Employee.find({ 
     reportingManager: managerId, 
@@ -16,11 +15,8 @@ const buildTree = async (managerId = null) => {
   return tree;
 };
 
-// @desc    Get organization hierarchy tree
-// @access  Private
 exports.getTree = async (req, res) => {
   try {
-    // Get all employees without a reporting manager (top level)
     const topLevelEmployees = await Employee.find({ 
       reportingManager: null, 
       isDeleted: false 
@@ -37,7 +33,6 @@ exports.getTree = async (req, res) => {
       data: tree
     });
   } catch (error) {
-    console.error('Get organization tree error:', error);
     res.status(500).json({ 
       success: false, 
       message: 'Server error' 
@@ -45,8 +40,6 @@ exports.getTree = async (req, res) => {
   }
 };
 
-// @desc    Get organization statistics
-// @access  Private
 exports.getStats = async (req, res) => {
   try {
     const totalEmployees = await Employee.countDocuments({ isDeleted: false });
@@ -75,7 +68,6 @@ exports.getStats = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Get organization stats error:', error);
     res.status(500).json({ 
       success: false, 
       message: 'Server error' 

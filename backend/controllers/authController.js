@@ -2,8 +2,6 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Employee = require('../models/Employee');
 
-// @desc    Login user
-// @access  Public
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -41,7 +39,6 @@ exports.login = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Login error:', error);
     res.status(500).json({ 
       success: false, 
       message: 'Server error' 
@@ -49,8 +46,6 @@ exports.login = async (req, res) => {
   }
 };
 
-// @desc    Logout user
-// @access  Private
 exports.logout = (req, res) => {
   res.json({ 
     success: true, 
@@ -58,8 +53,6 @@ exports.logout = (req, res) => {
   });
 };
 
-// @desc    Register new employee (role is always 'employee' for security)
-// @access  Public
 exports.register = async (req, res) => {
   try {
     const { 
@@ -74,7 +67,6 @@ exports.register = async (req, res) => {
       joiningDate 
     } = req.body;
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ 
@@ -83,7 +75,6 @@ exports.register = async (req, res) => {
       });
     }
 
-    // Check if employee ID already exists
     const existingEmployee = await Employee.findOne({ employeeId });
     if (existingEmployee) {
       return res.status(400).json({ 
@@ -92,10 +83,8 @@ exports.register = async (req, res) => {
       });
     }
 
-    // Always set role to 'employee' for security - roles are assigned by admins
     const role = 'employee';
 
-    // Create employee first
     const employee = await Employee.create({
       employeeId,
       name,
@@ -111,7 +100,6 @@ exports.register = async (req, res) => {
       profileImage: ''
     });
 
-    // Create user linked to employee
     const user = await User.create({
       email,
       password,
@@ -136,7 +124,6 @@ exports.register = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Register error:', error);
     res.status(500).json({ 
       success: false, 
       message: 'Server error' 
