@@ -159,9 +159,10 @@ Make sure you have installed:
 
 ---
 
-# Backend Setup
 
-Navigate to backend:
+## Backend Setup
+
+Navigate to the backend directory:
 
 ```bash
 cd backend
@@ -173,25 +174,24 @@ Install dependencies:
 npm install
 ```
 
-Create a `.env` file:
+Create a `.env` file inside the `backend` folder:
 
 ```env
 PORT=5000
-
 MONGODB_URI=mongodb+srv://midhunrj18852_db_user:83m9IRCXwZSn60CL@ems.gsdfxfk.mongodb.net/
-
 JWT_SECRET=your_secret_key
-
 JWT_EXPIRE=7d
 ```
 
-Start backend server:
+> **Note:** If you are evaluating this assignment, use the MongoDB connection string provided separately in the submission.
+
+Start the backend server:
 
 ```bash
 npm run dev
 ```
 
-Backend runs on:
+Backend URL:
 
 ```
 http://localhost:5000
@@ -199,41 +199,9 @@ http://localhost:5000
 
 ---
 
-# Database Setup
+## Frontend Setup
 
-Run the seed file to create initial users:
-
-```bash
-node seed.js
-```
-
-This creates testing accounts:
-
-## Super Admin
-
-```
-Email:
-admin@company.com
-
-Password:
-admin123
-```
-
-## HR Manager
-
-```
-Email:
-hr@company.com
-
-Password:
-hre123
-```
-
----
-
-# Frontend Setup
-
-Navigate to frontend:
+Navigate to the frontend directory:
 
 ```bash
 cd frontend
@@ -245,13 +213,19 @@ Install dependencies:
 npm install
 ```
 
-Start development server:
+Create a `.env` file inside the `frontend` folder:
+
+```env
+VITE_API_BASE_URL=http://localhost:5000
+```
+
+Start the frontend:
 
 ```bash
 npm run dev
 ```
 
-Frontend runs on:
+Frontend URL:
 
 ```
 http://localhost:5173
@@ -259,145 +233,73 @@ http://localhost:5173
 
 ---
 
-# API Endpoints
+# Test Credentials
 
-## Authentication
-
-### Login
+## Super Admin
 
 ```
-POST /api/auth/login
+Email: admin@company.com
+Password: admin123
 ```
 
-### Logout
+## HR Manager
 
 ```
-POST /api/auth/logout
+Email: hr@company.com
+Password: hre123
 ```
 
 ---
 
-## Employees
+# API Endpoints
 
-### Get Employees
-
-```
-GET /api/employees
-```
-
-### Create Employee
+### Authentication
 
 ```
-POST /api/employees
+POST   /api/auth/login
+POST   /api/auth/logout
 ```
 
-### Update Employee
+### Employees
 
 ```
-PUT /api/employees/:id
-```
-
-### Delete Employee
-
-```
+GET    /api/employees
+POST   /api/employees
+PUT    /api/employees/:id
 DELETE /api/employees/:id
 ```
 
----
-
-## Organization
-
-### Organization Tree
+### Organization
 
 ```
-GET /api/organization/tree
-```
-
-### Get Employee Reportees
-
-```
-GET /api/employees/:id/reportees
-```
-
-### Update Reporting Manager
-
-```
-PATCH /api/employees/:id/manager
+GET    /api/organization/tree
+GET    /api/employees/:id/reportees
+PATCH  /api/employees/:id/manager
 ```
 
 ---
 
-# Database Models
+# Security
 
-## User Model
-
-```javascript
-{
-  email: String,
-  password: String,
-  role: String,
-  employeeId: ObjectId
-}
-```
-
-## Employee Model
-
-```javascript
-{
-  employeeId: String,
-  name: String,
-  email: String,
-  phone: String,
-  department: String,
-  designation: String,
-  salary: Number,
-  joiningDate: Date,
-  status: String,
-  role: String,
-  reportingManager: ObjectId,
-  profileImage: String,
-  isDeleted: Boolean,
-  deletedAt: Date
-}
-```
-
----
-
-# Security Implementation
-
-Implemented security features:
-
-- JWT authentication
-- Password encryption using bcrypt
-- Protected API routes
-- Role permission checks
-- Request validation
-- Prevention of unauthorized role escalation
+- JWT Authentication
+- Password hashing using bcrypt
+- Protected Routes
+- Role-Based Access Control (RBAC)
+- Backend validation with Express Validator
+- Soft Delete
 
 ---
 
 # Additional Features
 
-- Dark mode
-- Responsive design
-- Dashboard charts
-- CSV employee import
-- Soft delete
-- Circular reporting prevention
-- Client and server-side validation
-
----
-
-# Future Improvements
-
-Possible enhancements:
-
-- Docker support
-- Automated testing
-- Cloud deployment
-- Email notifications
-- Advanced analytics
-- Audit logs
+- Dashboard Analytics
+- Search, Filter & Sorting
+- Pagination
+- Organization Hierarchy
+- Circular Reporting Prevention
+- CSV Import
+- Dark Mode
+- Responsive UI
 
 ---
 

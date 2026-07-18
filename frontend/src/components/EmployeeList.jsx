@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { employeeAPI } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -30,7 +30,7 @@ const EmployeeList = () => {
   const fetchEmployees = async () => {
     try {
       setLoading(true);
-      const params = new URLSearchParams({
+      const params = {
         search,
         department,
         role,
@@ -39,13 +39,12 @@ const EmployeeList = () => {
         sortOrder,
         page,
         limit: 10,
-      });
+      };
 
-      const response = await axios.get(`http://localhost:5000/api/employees?${params}`);
+      const response = await employeeAPI.getEmployees(params);
       setEmployees(response.data.data);
       setPagination(response.data.pagination);
     } catch (error) {
-      console.error('Error fetching employees:', error);
     } finally {
       setLoading(false);
     }
@@ -55,10 +54,9 @@ const EmployeeList = () => {
     if (!window.confirm('Are you sure you want to delete this employee?')) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/employees/${id}`);
+      await employeeAPI.deleteEmployee(id);
       fetchEmployees();
     } catch (error) {
-      console.error('Error deleting employee:', error);
       alert('Failed to delete employee');
     }
   };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { organizationAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { Bar, Doughnut } from 'react-chartjs-2';
@@ -36,10 +36,9 @@ const Dashboard = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/organization/stats');
+      const response = await organizationAPI.getStats();
       setStats(response.data.data);
     } catch (error) {
-      console.error('Error fetching stats:', error);
     } finally {
       setLoading(false);
     }

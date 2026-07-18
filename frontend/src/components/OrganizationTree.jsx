@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { organizationAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 
@@ -61,10 +61,9 @@ const OrganizationTree = () => {
 
   const fetchTree = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/organization/tree');
+      const response = await organizationAPI.getTree();
       setTree(response.data.data);
     } catch (error) {
-      console.error('Error fetching organization tree:', error);
     } finally {
       setLoading(false);
     }

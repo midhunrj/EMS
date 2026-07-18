@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { authAPI } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
 const Register = () => {
@@ -42,7 +42,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      await axios.post('http://localhost:5000/api/auth/register', {
+      await authAPI.register({
         email: formData.email,
         password: formData.password,
         employeeId: formData.employeeId,

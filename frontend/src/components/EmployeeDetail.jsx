@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { employeeAPI } from '../services/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -21,10 +21,9 @@ const EmployeeDetail = () => {
 
   const fetchEmployee = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/employees/${id}`);
+      const response = await employeeAPI.getEmployee(id);
       setEmployee(response.data.data);
     } catch (error) {
-      console.error('Error fetching employee:', error);
     } finally {
       setLoading(false);
     }
@@ -32,10 +31,9 @@ const EmployeeDetail = () => {
 
   const fetchReportees = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/employees/${id}/reportees`);
+      const response = await employeeAPI.getReportees(id);
       setReportees(response.data.data);
     } catch (error) {
-      console.error('Error fetching reportees:', error);
     }
   };
 

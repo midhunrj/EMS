@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { employeeAPI } from '../services/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -42,9 +42,8 @@ const EmployeeForm = () => {
 
   const fetchEmployee = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/employees/${id}`);
+      const response = await employeeAPI.getEmployee(id);
       const employee = response.data.data;
-      console.log(employee.reportingManager,"reportingmanager")
       setFormData({
         employeeId: employee.employeeId,
         name: employee.name,
@@ -60,17 +59,15 @@ const EmployeeForm = () => {
         profileImage: employee.profileImage || ''
       });
     } catch (error) {
-      console.error('Error fetching employee:', error);
       setError('Failed to fetch employee data');
     }
   };
 
   const fetchManagers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/employees');
+      const response = await employeeAPI.getEmployees();
       setManagers(response.data.data);
     } catch (error) {
-      console.error('Error fetching managers:', error);
     }
   };
 
@@ -108,13 +105,12 @@ const EmployeeForm = () => {
       }
 
       if (isEdit) {
-        await axios.put(`http://localhost:5000/api/employees/${id}`, payload);
+        await employeeAPI.updateEmployee(id, payload);
       } else {
-        await axios.post('http://localhost:5000/api/employees', payload);
+        await employeeAPI.createEmployee(payload);
       }
       navigate('/employees');
     } catch (error) {
-      console.error('Error saving employee:', error);
       setError(error.response?.data?.message || 'Failed to save employee');
     } finally {
       setLoading(false);
